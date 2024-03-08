@@ -57,8 +57,7 @@ class SnesConsole {
     int GetOffset();
 
   private:
-    static constexpr uint packet_size = 12;
-    static uint8_t _instance_count;
+    static constexpr uint packet_size = 13;
 
     uint8_t _instance;
     nes_port_t _port;
