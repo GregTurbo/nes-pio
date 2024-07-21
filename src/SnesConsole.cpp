@@ -60,7 +60,7 @@ void SnesConsole::LatchIrqHandler(uint gpio, uint32_t event_mask) {
     for (uint8_t i = 0; i < CFG_SNES_CONSOLE_COUNT; i++) {
         SnesConsole *console = _instances[i];
         if (console != nullptr && console->_port.latch_pin == gpio) {
-            console->_report.reserved = 0xF;
+            console->_report.reserved = 0x0;
             nes_device_send_packet(&console->_port, console->_report.raw16);
             return;
         }
