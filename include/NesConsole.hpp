@@ -56,15 +56,13 @@ class NesConsole {
      */
     int GetOffset();
 
+    nes_port_t _port;
+    nes_report_t _report;
+
   private:
     static constexpr uint packet_size = 9;
 
-    uint8_t _instance;
-    nes_port_t _port;
-    nes_report_t _report;
     bool _latch_triggered = false;
-
-    static void LatchIrqHandler(uint gpio, uint32_t event_mask);
 };
 
 #endif
