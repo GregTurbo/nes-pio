@@ -29,14 +29,14 @@ NesConsole::NesConsole(uint data_pin, uint clock_pin, uint latch_pin, PIO pio, i
     data = data_pin;
     gpio_set_irq_enabled(latch_pin, GPIO_IRQ_EDGE_RISE, true);
     irq_set_enabled(IO_IRQ_BANK0, true);
-    irq_add_shared_handler(IO_IRQ_BANK0, &PullHighPlease, 200);
+    irq_add_shared_handler(IO_IRQ_BANK0, &LatchIrqHandler, 200);
 }
 
 NesConsole::~NesConsole() {
     nes_device_port_terminate(&_port);
-    gpio_set_irq_enabled(latch_pin, GPIO_IRQ_EDGE_RISE, false);
+    gpio_set_irq_enabled(_port.latch_pin, GPIO_IRQ_EDGE_RISE, false);
     irq_set_enabled(IO_IRQ_BANK0, false);
-    irq_remove_handler(IO_IRQ_BANK0, irq_get_exclusive_handler());
+    irq_remove_handler(IO_IRQ_BANK0, irq_get_exclusive_handler(IO_IRQ_BANK0));
     _instance = nullptr;
 }
 
