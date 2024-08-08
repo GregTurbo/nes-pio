@@ -54,6 +54,18 @@ void nes_device_send_packet(nes_port_t *port, volatile uint16_t data) {
     pio_sm_put(port->pio, port->sm, ~data);
 }
 
+void snes_device_send_packet(nes_port_t *port, volatile uint32_t data) {
+    nes_write_program_init(
+        port->pio,
+        port->sm,
+        port->offset,
+        port->data_pin,
+        port->clock_pin,
+        &port->config
+    );
+
+    pio_sm_put(port->pio, port->sm, ~data);
+}
 /* HOST MODE IMPLEMENTATION */
 
 // TODO

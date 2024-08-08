@@ -56,15 +56,13 @@ class SnesConsole {
      */
     int GetOffset();
 
-  private:
-    static constexpr uint packet_size = 13;
-
-    uint8_t _instance;
     nes_port_t _port;
     snes_report_t _report;
-    bool _latch_triggered = false;
 
-    static void LatchIrqHandler(uint gpio, uint32_t event_mask);
+  private:
+    static constexpr uint packet_size = 17;
+
+    bool _latch_triggered = false;
 };
 
 #endif

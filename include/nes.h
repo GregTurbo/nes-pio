@@ -67,6 +67,14 @@ void nes_device_port_terminate(nes_port_t *port);
  */
 void nes_device_send_packet(nes_port_t *port, uint16_t data);
 
+/**
+ * @brief Send an individual byte to a joybus device/host
+ *
+ * @param port The NES instance to send the byte to
+ * @param data The data packet to send
+ */
+void snes_device_send_packet(nes_port_t *port, uint32_t data);
+
 /* HOST MODE INTERFACE */
 
 /**

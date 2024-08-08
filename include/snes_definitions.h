@@ -4,7 +4,8 @@
 #include <pico/stdlib.h>
 
 typedef union {
-    uint16_t raw16 = 0;
+    uint32_t raw32 = 0;
+    uint16_t raw16;
 
     struct __attribute__((packed)) {
         bool b : 1;
@@ -20,6 +21,7 @@ typedef union {
         bool l : 1;
         bool r : 1;
         uint8_t reserved : 4;
+        uint16_t end;
     };
 } snes_report_t;
 
