@@ -48,6 +48,7 @@ SnesConsole::SnesConsole(
 SnesConsole::~SnesConsole() {
     nes_device_port_terminate(&_port);
     gpio_set_irq_enabled(_port.latch_pin, GPIO_IRQ_EDGE_RISE, false);
+    gpio_remove_raw_irq_handler(_port.data_pin, &SnesLatchIrqHandler);
     irq_set_enabled(IO_IRQ_BANK0, false);
     _instance = nullptr;
 }
