@@ -22,7 +22,7 @@ void __not_in_flash_func(SnesLatchIrqHandler)() {
     _instance->_report.reserved = 0;
     _instance->_report.end = 0xFFFF;
     snes_device_send_packet(&_instance->_port, _instance->_report.raw32);
-    iobank0_hw->intr[data / 8] = 0xF << 4 * (data % 8);
+    io_bank0_hw->intr[data / 8] = 0xF << 4 * (data % 8);
 }
 
 SnesConsole::SnesConsole(
