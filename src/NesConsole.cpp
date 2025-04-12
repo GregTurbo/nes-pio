@@ -20,7 +20,7 @@ void __not_in_flash_func(LatchIrqHandler)() {
     }
     _instance->_report.reserved = 0xFF;
     nes_device_send_packet(&_instance->_port, _instance->_report.raw16);
-    iobank0_hw->intr[data / 8] = 0xF << 4 * (data % 8);
+    io_bank0_hw->intr[data / 8] = 0xF << 4 * (data % 8);
 }
 
 NesConsole::NesConsole(uint data_pin, uint clock_pin, uint latch_pin, PIO pio, int sm, int offset) {
