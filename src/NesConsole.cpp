@@ -11,16 +11,13 @@
 #define INVALID_INSTANCE 0xff
 
 static NesConsole *_instance = nullptr;
-static uint8_t data = 0;
 
+//not good, fix later
 void __not_in_flash_func(LatchIrqHandler)() {
-    gpio_put(data, 1);
-    if(gpio_get_irq_event_mask(data) & GPIO_IRQ_EDGE_RISE) {
-        gpio_acknowledge_irq(data, GPIO_IRQ_EDGE_RISE);
-    }
+    gpio_put(8, 1);
     _instance->_report.reserved = 0xFF;
     nes_device_send_packet(&_instance->_port, _instance->_report.raw16);
-    io_bank0_hw->intr[data / 8] = 0xF << 4 * (data % 8);
+    gpio_acknowledge_irq(10, GPIO_IRQ_EDGE_RISE);
 }
 
 NesConsole::NesConsole(uint data_pin, uint clock_pin, uint latch_pin, PIO pio, int sm, int offset) {
@@ -29,17 +26,14 @@ NesConsole::NesConsole(uint data_pin, uint clock_pin, uint latch_pin, PIO pio, i
     }
 
     nes_device_port_init(&_port, data_pin, clock_pin, latch_pin, packet_size, pio, sm, offset);
-    data = data_pin;
+    gpio_add_raw_irq_handler_with_order_priority(10, &LatchIrqHandler, 255);
     gpio_set_irq_enabled(latch_pin, GPIO_IRQ_EDGE_RISE, true);
-    gpio_add_raw_irq_handler(data_pin, &LatchIrqHandler);
-    irq_set_enabled(IO_IRQ_BANK0, true);
 }
 
 NesConsole::~NesConsole() {
     nes_device_port_terminate(&_port);
     gpio_set_irq_enabled(_port.latch_pin, GPIO_IRQ_EDGE_RISE, false);
     gpio_remove_raw_irq_handler(_port.data_pin, &LatchIrqHandler);
-    irq_set_enabled(IO_IRQ_BANK0, false);
     _instance = nullptr;
 }
 
